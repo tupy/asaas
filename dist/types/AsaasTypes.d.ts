@@ -136,14 +136,14 @@ export interface IListPaymentsParams {
     estimatedCreditDate?: string;
     pixQrCodeId?: string;
     anticipated?: boolean;
-    "dateCreated[ge]"?: string;
-    "dateCreated[le]"?: string;
-    "paymentDate[ge]"?: string;
-    "paymentDate[le]"?: string;
-    "estimatedCreditDate[ge]"?: string;
-    "estimatedCreditDate[le]"?: string;
-    "dueDate[ge]"?: string;
-    "dueDate[le]"?: string;
+    'dateCreated[ge]'?: string;
+    'dateCreated[le]'?: string;
+    'paymentDate[ge]'?: string;
+    'paymentDate[le]'?: string;
+    'estimatedCreditDate[ge]'?: string;
+    'estimatedCreditDate[le]'?: string;
+    'dueDate[ge]'?: string;
+    'dueDate[le]'?: string;
     user?: string;
     offset?: number;
     limit?: number;
@@ -365,3 +365,96 @@ export interface IListSubscriptionPaymentsResponse {
     offset?: number;
     data?: ISubscriptionPayment[];
 }
+export interface IAsaasPixQRCodesDecode {
+    payload: string;
+    changeValue?: number;
+}
+export interface IAsaasPixQRCodesPayment {
+    qrCode: {
+        payload: string;
+        changeValue?: number;
+    };
+    value: number;
+    description?: string;
+    scheduleDate?: Date;
+}
+type PersonType = 'FISICA' | 'JURIDICA';
+type QRCodeType = 'STATIC' | 'DYNAMIC' | 'DYNAMIC_WITH_ASAAS_ADDRESS_KEY';
+type TransactionOriginType = 'MANUAL' | 'ADDRESS_KEY' | 'STATIC_QRCODE' | 'DYNAMIC_QRCODE' | 'EXTERNAL_DEBIT';
+type AccountType = 'CHECKING_ACCOUNT' | 'SALARY_ACCOUNT' | 'INVESTIMENT_ACCOUNT' | 'PAYMENT_ACCOUNT';
+type Payer = {
+    name: string;
+    cpfCnpj: string;
+};
+export interface IAsaasPixQRCodesDecodeResponse {
+    payload: string;
+    type: QRCodeType;
+    transactionOriginType: TransactionOriginType;
+    pixKey: string;
+    conciliationIdentifier: string;
+    endToEndIdentifier: string;
+    dueDate: Date;
+    expirationDate: Date;
+    finality: 'WITHDRAWAL' | 'CHANGE';
+    value: number;
+    changeValue: number;
+    canBePaidWithDifferentValue: boolean;
+    canModifyCashValue: boolean;
+    interest: number;
+    fine: number;
+    discount: number;
+    totalValue: number;
+    receiver: {
+        ispb: number;
+        ispbName: string;
+        name: string;
+        tradingName: string;
+        cpfCnpj: string;
+        personType: PersonType;
+        agency: string;
+        account: string;
+        accountType: AccountType;
+    };
+    payer: Payer;
+    description: string;
+    canBePaid: boolean;
+    cannotBePaidReason: string;
+}
+export interface IAsaasPixQRCodesPaymentResponse {
+    id: string;
+    endToEndIdentifier: string;
+    finality: string;
+    value: number;
+    changeValue: number;
+    refundedValue: number;
+    effectiveDate: Date;
+    scheduledDate: Date;
+    status: string;
+    type: string;
+    originType: TransactionOriginType;
+    description: string;
+    transactionReceiptUrl: string;
+    refusalReason: string;
+    canBeCanceled: boolean;
+    originalTransaction: string;
+    externalAccount: {
+        ispb: number;
+        ispbName: string;
+        name: string;
+        cpfCnpj: string;
+        addressKey: string;
+        addressKeyType: string;
+    };
+    qrCode: {
+        payer: Payer;
+        conciliationIdentifier: string;
+        originalValue: number;
+        dueDate: Date;
+        interest: number;
+        fine: number;
+        discount: number;
+        expirationDate: Date;
+    };
+    payment: any;
+}
+export {};

@@ -12,6 +12,7 @@ describe('AsaasClient', () => {
         expect(client.payments).toBeDefined();
         expect(client.installments).toBeDefined();
         expect(client.subscriptions).toBeDefined();
+        expect(client.webhooks.payments).toBeDefined();
         const expectedBaseURL = 'https://sandbox.asaas.com/api/v3';
         expect(axios_1.default.defaults.baseURL).toBe(expectedBaseURL);
     });
