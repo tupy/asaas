@@ -1,10 +1,11 @@
-import { AxiosInstance } from 'axios';
+import { AxiosError, AxiosInstance } from 'axios';
 import {
   IAsaasPixQRCodesDecode,
   IAsaasPixQRCodesDecodeResponse,
   IAsaasPixQRCodesPayment,
   IAsaasPixQRCodesPaymentResponse,
 } from '../types/AsaasTypes';
+import { AsaasAPIError } from '../types/errors';
 
 export class PixAPI {
   constructor(private apiClient: AxiosInstance) {}
@@ -19,8 +20,12 @@ export class PixAPI {
       );
       return response.data;
     } catch (error) {
-      console.error('Erro ao decodificar o QRCode:', error);
-      throw error;
+      const message = 'Erro ao decodificar o QRCode';
+      const data =
+        error instanceof AxiosError ? error.response?.data?.error : undefined;
+      const cause =
+        error instanceof Error ? error : new Error('An unknown error occurred');
+      throw new AsaasAPIError(message, cause, data);
     }
   }
 
@@ -34,8 +39,12 @@ export class PixAPI {
       );
       return response.data;
     } catch (error) {
-      console.error('Erro ao pagar o QRCode:', error);
-      throw error;
+      const message = 'Erro ao pagar o QRCode';
+      const data =
+        error instanceof AxiosError ? error.response?.data?.error : undefined;
+      const cause =
+        error instanceof Error ? error : new Error('An unknown error occurred');
+      throw new AsaasAPIError(message, cause, data);
     }
   }
 
@@ -46,8 +55,12 @@ export class PixAPI {
       });
       return response.data;
     } catch (error) {
-      console.error('Erro ao buscar o QRCode:', error);
-      throw error;
+      const message = 'Erro ao buscar o QRCode';
+      const data =
+        error instanceof AxiosError ? error.response?.data?.error : undefined;
+      const cause =
+        error instanceof Error ? error : new Error('An unknown error occurred');
+      throw new AsaasAPIError(message, cause, data);
     }
   }
 }
