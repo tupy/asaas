@@ -408,7 +408,10 @@ export interface IAsaasPixQRCodesDecode {
 }
 
 export interface IAsaasPixQRCodesPayment {
-  qrCode: string;
+  qrCode: {
+    payload: string;
+    changeValue?: number; // pix troco
+  };
   value: number;
   description?: string;
   scheduleDate?: Date;
